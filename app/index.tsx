@@ -45,7 +45,6 @@ export default function Index() {
     <ThemedButton  onPress={() => setShowNames(!showNames)} title="Show Names"/>
       </View>
 
-      //Modal to add/edit name
       <Modal
         animationType="slide"
         transparent={true}
@@ -60,6 +59,7 @@ export default function Index() {
             onChangeText={setName}
             label="Enter Name"
           />
+          <View style={styles.horizontalView}>
           <ThemedButton
             onPress={() => {
               if (selectedName) {
@@ -75,18 +75,21 @@ export default function Index() {
             title={selectedName ? "Edit Name" : "Add Name"}
           />
           <ThemedButton
+
             onPress={() => {
               setModalVisible(false);
               setName("");
             }
             }
+
             title="Cancel"
           />
+            </View>
+          
           
         </View>
       </Modal>
 
-      // List of names
       {showNames && (
       <ScrollView>
         {Array.isArray(names) && names.length > 0 ? (
@@ -115,13 +118,13 @@ export default function Index() {
 
 const styles = StyleSheet.create({
   modalView: {
-    marginTop: 250,
-    marginBottom: 250,
+    marginVertical:250,
     marginHorizontal: 20,
     backgroundColor: theme.light.colors.background,
     borderRadius: 20,
     padding: 35,
     alignItems: "center",
+    alignSelf: "center",
     shadowColor: theme.light.colors.text,
     shadowOffset: {
       width: 0,
@@ -141,22 +144,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     alignItems: "center",
+    height: 1000,
     marginTop: 20,
+    marginHorizontal: 20,
   },
   scrollView: {
     marginHorizontal: 20,
-    backgroundColor: "black",
+    alignItems: "stretch",
     marginTop: 20,
     flex: 1,},
   scrollViewContent: {
     padding: 20,
-
-    backgroundColor: "#000",
     flexGrow: 1,
-    width: "100%",
-  
-    justifyContent: "center",
-    alignItems: "center",
+    alignItems: "stretch"
   },
   card: {
     backgroundColor: theme.light.colors.background,
