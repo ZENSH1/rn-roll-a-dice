@@ -1,6 +1,7 @@
 import { useTheme } from '@react-navigation/native';
 import React from 'react';
 import { TextInput } from 'react-native';
+import { theme } from './themes';
 
 
 type ThemedInputProps = {
@@ -10,7 +11,7 @@ type ThemedInputProps = {
 };
 
 export const ThemedInput: React.FC<ThemedInputProps> = ({ value, onChangeText, label }) => {
-  const { colors } = useTheme();
+  const { colors } = theme.light;
 
   return (
     <TextInput
@@ -19,7 +20,7 @@ export const ThemedInput: React.FC<ThemedInputProps> = ({ value, onChangeText, l
       placeholder={label}
       placeholderTextColor={colors.text}
       style={{ margin: 10,
-        borderColor: colors.border,
+        borderColor: colors.onSurfaceVariant,
         borderWidth: 1,
         borderRadius: 5,
         padding: 10,

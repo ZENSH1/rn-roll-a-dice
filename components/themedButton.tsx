@@ -8,7 +8,7 @@ type ThemedButtonProps = {
 };
 
 export const ThemedButton: React.FC<ThemedButtonProps> = ({ onPress, title }) => {
-  const { colors } = useTheme();
+  const { colors } = theme.light;
 
 return (
     <TouchableOpacity

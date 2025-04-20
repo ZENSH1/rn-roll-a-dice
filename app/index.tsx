@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import { ThemedButton } from "@/components/themedButton";
 import { ThemedInput } from "@/components/themedInput";
 import { ThemedText } from "@/components/themedText";
@@ -40,9 +40,10 @@ export default function Index() {
         alignItems: "center",
       }}
     >
+    <View style={styles.horizontalView}>
     <ThemedButton  onPress={() => setModalVisible(!modalVisible)} title="Add Name"/>
-    //Show Names
     <ThemedButton  onPress={() => setShowNames(!showNames)} title="Show Names"/>
+      </View>
 
       //Modal to add/edit name
       <Modal
@@ -87,17 +88,25 @@ export default function Index() {
 
       // List of names
       {showNames && (
-      Array.isArray(names) && names.length > 0 ? (
-        <View style={{ marginTop: 20 }}>
-          <ThemedText>Names:</ThemedText>
-          {names.map((name) => (
-            <ThemedText key={name.id}>{name.name}</ThemedText>
-          ))}
-        </View>
-      ) : (
-        <ThemedText>No names available</ThemedText>
+      <ScrollView>
+        {Array.isArray(names) && names.length > 0 ? (
+          <View style={{
+            width: "100%",
+          }}>
+            <ThemedText>Names:</ThemedText>
+            {names.map((name) => (
+              <View style={styles.card} key={name.id}>
+                <ThemedText>{name.name}</ThemedText>
+                </View>
+            ))}
+          </View>
+        ) : (
+          <ThemedText>No names available</ThemedText>
+        )}
+      </ScrollView>
       )
-      )}
+      
+      }
 
 
       </View>
@@ -106,7 +115,9 @@ export default function Index() {
 
 const styles = StyleSheet.create({
   modalView: {
-    margin: 20,
+    marginTop: 250,
+    marginBottom: 250,
+    marginHorizontal: 20,
     backgroundColor: theme.light.colors.background,
     borderRadius: 20,
     padding: 35,
@@ -120,23 +131,48 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    backgroundColor: theme.light.colors.primary,
-  },
-  buttonClose: {
-    backgroundColor: theme.light.colors.primary,
-  },
-  textStyle: {
-    color: theme.light.colors.text,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
   modalText: {
     marginBottom: 15,
     textAlign: "center",
     color: theme.light.colors.text,
+  },
+  horizontalView: {
+    flexDirection: "row",
+    flex: 1,
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 20,
+  },
+  scrollView: {
+    marginHorizontal: 20,
+    backgroundColor: "black",
+    marginTop: 20,
+    flex: 1,},
+  scrollViewContent: {
+    padding: 20,
+
+    backgroundColor: "#000",
+    flexGrow: 1,
+    width: "100%",
+  
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  card: {
+    backgroundColor: theme.light.colors.background,
+    borderRadius: 10,
+    padding: 20,
+    marginVertical: 10,
+    width: "100%",
+  
+    alignSelf: "center",
+    shadowColor: theme.light.colors.text,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
 });
