@@ -9,87 +9,28 @@ import React from "react";
 import { Modal, StyleSheet } from "react-native";
 import { theme } from "@/components/themes";
 import { Animated, Easing } from "react-native";
+import useNames from "@/hooks/useNames";
 
 export default function Index() {
-  const [name, setName] = useState("");
-  const [names, setNames] = useState([]);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedName, setSelectedName] = useState(null);
-  const [showNames, setShowNames] = useState(false);
-  const [useAutoHeight, setUseAutoHeight] = useState(false);
-  const [refresh, setRefresh] = useState(false);
-  const [heightAnim] = useState(new Animated.Value(0)); // Start with height 0
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await fetchNames();
-        setNames(data);
-      } catch (error) {
-        console.error("Error fetching names:", error);
-      }
-    };
-  
-    fetchData();
-  }, [refresh]); // Add 'refresh' as a dependency
-  
-  useEffect(() => {
-    Animated.timing(heightAnim, {
-      toValue: showNames ? 700 : 0, // Target height (e.g., 300px) when `showNames` is true
-      duration: 300, // Animation duration in milliseconds
-      easing: Easing.ease, // Optional easing function
-      useNativeDriver: false, // `false` because height cannot use the native driver
-      
-    }).start(()=> {
-      if (!showNames) {
-        console.log("Height animation completed 0");
-        setUseAutoHeight(false); // Reset auto height when hiding
-      } else {
-        setUseAutoHeight(true); // Set auto height when showing
-        console.log("Height animation completed full");
-      }
-
-  });
-
-  }, [showNames]);
-
-  const handleNamePress = (name) => {
-    setSelectedName(name);
-    setName(name.name);
-    setModalVisible(true);
-  };
-  const handleDeletePress = (name) => {
-    removeName(name.id);
-    setRefresh(!refresh); // Trigger a refresh
-  };
-  const handleEditPress = (name) => {
-    setSelectedName(name);
-    setName(name.name);
-    setModalVisible(true);
-  };
-  const handleAddPress = () => {
-    setSelectedName(null);
-    setName("");
-    setModalVisible(true);
-  };
-  const handleCancelPress = () => {
-    setModalVisible(false);
-    setName("");
-    setSelectedName(null);
-  };
-  const handleSavePress = () => {
-    if (selectedName) {
-      editName(selectedName.id, name);
-    } else {
-      addName(name);
-    }
-    setName("");
-    setRefresh(!refresh); // Trigger a refresh
-    setModalVisible(false);
-  }
-  const handleShowNamesPress = () => {
-    setShowNames(!showNames);
-  }
-
+  //UseNames hook to manage namesScreen state and actions
+  const {
+    name,
+    names,
+    modalVisible,
+    selectedName,
+    showNames,
+    useAutoHeight,
+    heightAnim,
+    handleNamePress,
+    handleDeletePress,
+    handleEditPress,
+    handleAddPress,
+    handleCancelPress,
+    handleSavePress,
+    handleShowNamesPress,
+    setModalVisible,
+    setName,
+  } = useNames();
 
   return (
     <View
@@ -138,9 +79,8 @@ export default function Index() {
         <Animated.View style={{
           flex: 1,
           maxHeight: useAutoHeight ? null : heightAnim, // Use the animated height
-          overflow: '', // Hide overflow to prevent content from spilling out
-        }
-      }>
+          overflow: 'hidden', // Hide overflow to prevent content from spilling out
+        }}>
           <ThemedText fontsize={26}>Names:</ThemedText>
           <ScrollView
         style={{ ...styles.scrollView }}
@@ -203,12 +143,13 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     marginHorizontal: 20,
-    marginTop: 20,
+    marginTop: 5,
     width: "100%",
     flex: 1
   },
   scrollViewContent: {
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 5,
     flexGrow: 1,
     alignItems: "stretch"
   },
@@ -217,7 +158,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 20,
     flex:1,
-    marginVertical: 10,
+    marginBottom: 15,
     width: 300,
     alignSelf: "center",
     shadowColor: theme.light.colors.text,
