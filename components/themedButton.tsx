@@ -15,10 +15,14 @@ return (
         onPress={onPress}
         style={{
             backgroundColor: colors.primary,
-            padding: 10,
-            borderRadius: 5,
+            paddingVertical: 12,
+            paddingHorizontal: 20,
+            borderRadius: 25,
             margin: 10,
             alignItems: 'center',
+            justifyContent: 'center',
+            width:"auto",
+            height: 50,
         }}>
         <Text style={{ color: 'white', fontSize: 16 }}>{title}</Text>
     </TouchableOpacity>

@@ -11,7 +11,6 @@ import { theme } from "@/components/themes";
 
 
 export default function Index() {
-  const { colors } = useTheme();
   const [name, setName] = useState("");
   const [names, setNames] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -42,7 +41,7 @@ export default function Index() {
     >
     <View style={styles.horizontalView}>
     <ThemedButton  onPress={() => setModalVisible(!modalVisible)} title="Add Name"/>
-    <ThemedButton  onPress={() => setShowNames(!showNames)} title="Show Names"/>
+    <ThemedButton  onPress={() => setShowNames(!showNames)} title={showNames ? "Hide Names" : "Show Names"}/>
     </View>
 
 
