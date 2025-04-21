@@ -43,7 +43,8 @@ export default function Index() {
     <View style={styles.horizontalView}>
     <ThemedButton  onPress={() => setModalVisible(!modalVisible)} title="Add Name"/>
     <ThemedButton  onPress={() => setShowNames(!showNames)} title="Show Names"/>
-      </View>
+    </View>
+
 
       <Modal
         animationType="slide"
@@ -96,15 +97,15 @@ export default function Index() {
           <View style={{
             width: "100%",
           }}>
-            <ThemedText>Names:</ThemedText>
+            <ThemedText fontsize={26}>Names:</ThemedText>
             {names.map((name) => (
               <View style={styles.card} key={name.id}>
-                <ThemedText>{name.name}</ThemedText>
+                <ThemedText fontsize={18}>{name.name}</ThemedText>
                 </View>
             ))}
           </View>
         ) : (
-          <ThemedText>No names available</ThemedText>
+          <ThemedText fontsize={26}>No names available</ThemedText>
         )}
       </ScrollView>
       )
@@ -141,10 +142,10 @@ const styles = StyleSheet.create({
   },
   horizontalView: {
     flexDirection: "row",
-    flex: 1,
     justifyContent: "space-between",
     alignItems: "center",
-    height: 1000,
+    height: 100,
+    color: theme.light.colors.text,
     marginTop: 20,
     marginHorizontal: 20,
   },
@@ -152,7 +153,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     alignItems: "stretch",
     marginTop: 20,
-    flex: 1,},
+    flex: 1
+  },
   scrollViewContent: {
     padding: 20,
     flexGrow: 1,
@@ -162,9 +164,9 @@ const styles = StyleSheet.create({
     backgroundColor: theme.light.colors.background,
     borderRadius: 10,
     padding: 20,
+    flex:1,
     marginVertical: 10,
-    width: "100%",
-  
+    width: 300,
     alignSelf: "center",
     shadowColor: theme.light.colors.text,
     shadowOffset: {
@@ -174,5 +176,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+
   },
 });
