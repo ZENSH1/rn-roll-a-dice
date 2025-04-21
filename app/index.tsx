@@ -8,7 +8,7 @@ import { addName,removeName,editName,fetchNames } from "@/db/functions";
 import React from "react";
 import { Modal, StyleSheet } from "react-native";
 import { theme } from "@/components/themes";
-
+import { Animated, Easing } from "react-native";
 
 export default function Index() {
   const [name, setName] = useState("");
@@ -16,8 +16,9 @@ export default function Index() {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedName, setSelectedName] = useState(null);
   const [showNames, setShowNames] = useState(false);
+  const [useAutoHeight, setUseAutoHeight] = useState(false);
   const [refresh, setRefresh] = useState(false);
-
+  const [heightAnim] = useState(new Animated.Value(0)); // Start with height 0
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -31,6 +32,65 @@ export default function Index() {
     fetchData();
   }, [refresh]); // Add 'refresh' as a dependency
   
+  useEffect(() => {
+    Animated.timing(heightAnim, {
+      toValue: showNames ? 700 : 0, // Target height (e.g., 300px) when `showNames` is true
+      duration: 300, // Animation duration in milliseconds
+      easing: Easing.ease, // Optional easing function
+      useNativeDriver: false, // `false` because height cannot use the native driver
+      
+    }).start(()=> {
+      if (!showNames) {
+        console.log("Height animation completed 0");
+        setUseAutoHeight(false); // Reset auto height when hiding
+      } else {
+        setUseAutoHeight(true); // Set auto height when showing
+        console.log("Height animation completed full");
+      }
+
+  });
+
+  }, [showNames]);
+
+  const handleNamePress = (name) => {
+    setSelectedName(name);
+    setName(name.name);
+    setModalVisible(true);
+  };
+  const handleDeletePress = (name) => {
+    removeName(name.id);
+    setRefresh(!refresh); // Trigger a refresh
+  };
+  const handleEditPress = (name) => {
+    setSelectedName(name);
+    setName(name.name);
+    setModalVisible(true);
+  };
+  const handleAddPress = () => {
+    setSelectedName(null);
+    setName("");
+    setModalVisible(true);
+  };
+  const handleCancelPress = () => {
+    setModalVisible(false);
+    setName("");
+    setSelectedName(null);
+  };
+  const handleSavePress = () => {
+    if (selectedName) {
+      editName(selectedName.id, name);
+    } else {
+      addName(name);
+    }
+    setName("");
+    setRefresh(!refresh); // Trigger a refresh
+    setModalVisible(false);
+  }
+  const handleShowNamesPress = () => {
+    setShowNames(!showNames);
+  }
+
+
   return (
     <View
       style={{
@@ -40,8 +100,8 @@ export default function Index() {
       }}
     >
     <View style={styles.horizontalView}>
-    <ThemedButton  onPress={() => setModalVisible(!modalVisible)} title="Add Name"/>
-    <ThemedButton  onPress={() => setShowNames(!showNames)} title={showNames ? "Hide Names" : "Show Names"}/>
+    <ThemedButton  onPress={handleAddPress} title="Add Name"/>
+    <ThemedButton  onPress={handleShowNamesPress} title={showNames ? "Hide Names" : "Show Names"}/>
     </View>
 
 
@@ -61,27 +121,11 @@ export default function Index() {
           />
           <View style={styles.horizontalView}>
           <ThemedButton
-            onPress={() => {
-              if (selectedName) {
-                editName(selectedName.id, name);
-              } else {
-                addName(name);
-              }
-              setName("");
-              setRefresh(!refresh); // Trigger a refresh
-              setModalVisible(false);
-            }
-            }
+            onPress={handleSavePress}
             title={selectedName ? "Edit Name" : "Add Name"}
           />
           <ThemedButton
-
-            onPress={() => {
-              setModalVisible(false);
-              setName("");
-            }
-            }
-
+            onPress={handleCancelPress}
             title="Cancel"
           />
             </View>
@@ -91,12 +135,21 @@ export default function Index() {
       </Modal>
 
       {showNames && (
-      <ScrollView>
+        <Animated.View style={{
+          flex: 1,
+          maxHeight: useAutoHeight ? null : heightAnim, // Use the animated height
+          overflow: '', // Hide overflow to prevent content from spilling out
+        }
+      }>
+          <ThemedText fontsize={26}>Names:</ThemedText>
+          <ScrollView
+        style={{ ...styles.scrollView }}
+        contentContainerStyle={styles.scrollViewContent}
+        showsVerticalScrollIndicator={false}>
         {Array.isArray(names) && names.length > 0 ? (
           <View style={{
             width: "100%",
           }}>
-            <ThemedText fontsize={26}>Names:</ThemedText>
             {names.map((name) => (
               <View style={styles.card} key={name.id}>
                 <ThemedText fontsize={18}>{name.name}</ThemedText>
@@ -106,10 +159,10 @@ export default function Index() {
         ) : (
           <ThemedText fontsize={26}>No names available</ThemedText>
         )}
-      </ScrollView>
-      )
-      
-      }
+          </ScrollView>
+        </Animated.View>
+    
+      )  }
 
 
       </View>
@@ -150,8 +203,8 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     marginHorizontal: 20,
-    alignItems: "stretch",
     marginTop: 20,
+    width: "100%",
     flex: 1
   },
   scrollViewContent: {
