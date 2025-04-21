@@ -5,9 +5,9 @@ import User from "../db/models/User"; // Adjust the path as needed
 
 const useNames = () => {
     const [name, setName] = useState("");
-    const [names, setNames] = useState([]);
+    const [names, setNames] = useState<User[] | null>(null);
     const [modalVisible, setModalVisible] = useState(false);
-    const [selectedName, setSelectedName] = useState(null);
+    const [selectedName, setSelectedName] = useState<User | null>(null);
     const [showNames, setShowNames] = useState(false);
     const [useAutoHeight, setUseAutoHeight] = useState(false);
     const [refresh, setRefresh] = useState(false);
