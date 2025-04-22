@@ -3,6 +3,7 @@ import { ThemedButton } from "@/components/themedButton";
 import { ThemedInput } from "@/components/themedInput";
 import { ThemedText } from "@/components/themedText";
 import { useState, useEffect } from "react";
+import { useRouter } from "expo-router";
 import { useTheme } from "@react-navigation/native";
 import { addName,removeName,editName,fetchNames } from "@/db/functions";
 import React from "react";
@@ -31,6 +32,7 @@ export default function Index() {
     setModalVisible,
     setName,
   } = useNames();
+  const router = useRouter();
 
   return (
     <View
@@ -91,7 +93,13 @@ export default function Index() {
             width: "100%",
           }}>
             {names.map((name) => (
-              <View style={styles.card} key={name.id}>
+                <View
+                style={styles.card}
+                key={name.id}
+                onTouchEnd={() => {
+                    router.push("/diceRollScreen");
+                }}
+                >
                 <ThemedText fontsize={18}>{name.name}</ThemedText>
                 </View>
             ))}

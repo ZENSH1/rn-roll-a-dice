@@ -13,7 +13,7 @@ export const ThemedText: React.FC<ThemedTextProps> = ({ children,fontsize }) => 
 
   return (
     <Text style={{ color: colors.text, fontSize: fontsize, margin: 5, 
-      
+
      }}>
       {children}
     </Text>
