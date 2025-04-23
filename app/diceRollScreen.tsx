@@ -10,24 +10,33 @@ const diceRollScreen = () => {
   const [animationValue] = useState(new Animated.ValueXY({ x: 0, y: 0 }))
   const [rotateValue] = useState(new Animated.Value(0))
   const [diceImage, setDiceImage] = useState(diceImages[0])
+  const [textVisible, setTextVisible] = useState(false)
   
 
   const [roll, setRoll] = React.useState(0)
 
   const rollDice = () => {
-    //return a random number between 0 and 5
+    // Generate a random number between 0 and 5
     const randomValue = Math.floor(Math.random() * 6);
-    setRoll(randomValue)
+    
+    // Set the new roll value
+    setRoll(randomValue);
+    
+    // Set the corresponding dice image immediately after roll is updated
+    setDiceImage(diceImages[randomValue]);
+    
+    // Make the text visible
+    setTextVisible(true);
+  
+    // Hide the text after 2 seconds
+    const timer = setTimeout(() => setTextVisible(false), 2000);
+  
+    // Cleanup timeout if the component unmounts or the effect is triggered again
+    return () => clearTimeout(timer);
   }
-
+  
   
 
-  useEffect(() => {
-
-  
-
-    setDiceImage(diceImages[roll]);
-  }, [roll]);
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', marginTop: 50 }}>
@@ -40,30 +49,29 @@ const diceRollScreen = () => {
       <View style={{ margin: 20, alignItems: 'center' , justifyContent: 'center' , 
         flex: 1,
         width: '90%',
-        backgroundColor: 'rgba(186, 13, 13, 0.8)', // Semi-transparent white background
       }}>
      <Animated.View
         style={[
           {
         width: 150,
         height: 150,
-        position: 'absolute',
         alignContent: 'center',
         justifyContent: 'center',
         alignItems: 'center',
-        transform: [{ rotate: rotateValue.interpolate({
-          inputRange: [0, 1],
-          outputRange: ['0deg', '360deg']
-        }) }],
           },
         ]}
       >
         <Image source={diceImages[roll]} style={{ width: 150, height: 150 }} />
+        {textVisible && <Text>You Rolled {roll + 1}</Text>}
       </Animated.View>
       </View>
       
       <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginTop: 20, marginBottom: 30 }}>
-        <ThemedButton title="Roll Dice" onPress={rollDice} />
+        <ThemedButton title={textVisible?"WAITING":"Roll Dice"} onPress={() => { 
+          if (!textVisible) {
+            rollDice();
+          }
+        }} />
         <ThemedButton title="Change Name" onPress={() => {}} />
       </View>
     </View>
