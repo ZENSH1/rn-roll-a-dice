@@ -4,6 +4,8 @@ import { ThemedButton } from '@/components/themedButton'
 import { ThemedText } from '@/components/themedText'
 import { diceImages } from '@/constants/images'
 import { addDice } from '@/db/functions'
+//add router
+import { useRouter } from 'expo-router'
 
 const diceRollScreen = () => {
 
@@ -14,6 +16,7 @@ const diceRollScreen = () => {
   
 
   const [roll, setRoll] = React.useState(0)
+  const router = useRouter()
 
   const rollDice = () => {
     // Generate a random number between 0 and 5
@@ -30,6 +33,7 @@ const diceRollScreen = () => {
   
     // Hide the text after 2 seconds
     const timer = setTimeout(() => setTextVisible(false), 2000);
+
   
     // Cleanup timeout if the component unmounts or the effect is triggered again
     return () => clearTimeout(timer);
@@ -72,7 +76,9 @@ const diceRollScreen = () => {
             rollDice();
           }
         }} />
-        <ThemedButton title="Change Name" onPress={() => {}} />
+        <ThemedButton title="Change Name" onPress={() => {
+          router.back()
+        }} />
       </View>
     </View>
   )
