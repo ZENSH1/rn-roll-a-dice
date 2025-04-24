@@ -9,6 +9,7 @@ type ThemedButtonProps = {
   onPress: () => void;
   title: string;
   disabled?: boolean;
+  
 };
 
 export const ThemedButton: React.FC<ThemedButtonProps> = ({ onPress, title, disabled }) => {

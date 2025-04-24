@@ -4,6 +4,7 @@ import { useTheme } from '@react-navigation/native';
 import { Colors } from '@/constants/colors'; // Adjust the import path as necessary
 type ThemedTextProps = {
   children: React.ReactNode;
+  
   fontsize: number; // Add fontSize prop
 };
 //Add text size as a prop 

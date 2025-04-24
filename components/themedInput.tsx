@@ -9,6 +9,7 @@ type ThemedInputProps = {
   onChangeText: (text: string) => void;
   label: string;
   style?: object; // Optional style prop for additional styling
+  
 };
 
 export const ThemedInput: React.FC<ThemedInputProps> = ({ value, onChangeText, label, style }) => {

@@ -16,6 +16,8 @@ export const Colors = {
         button: 'green',
         onSurfaceVariant: 'darkgreen',
         white: 'white',
+        cardColor: '#f7f7f7',
+        shadowColor: '#000000',
     },
     dark: {
         accent: '#03DAC6',
@@ -31,5 +33,7 @@ export const Colors = {
         button: 'green',
         onSurfaceVariant: 'lightgreen',
         white: 'white',
+        cardColor: '#202030',
+        shadowColor: '#2d2d2d',
     },
 };

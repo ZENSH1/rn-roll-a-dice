@@ -1,11 +1,9 @@
 import { ScrollView, Text, View } from "react-native";
-import { ThemedButton } from "@/components/themedButton";
-import { ThemedInput } from "@/components/themedInput";
-import { ThemedText } from "@/components/themedText";
-import { useState, useEffect } from "react";
+import { ThemedButton } from "@/components/ThemedButton";
+import { ThemedInput } from "@/components/ThemedInput";
+import { ThemedText } from "@/components/ThemedText";
+import { ThemedCard } from "@/components/ThemedCard";
 import { useRouter } from "expo-router";
-import { useTheme } from "@react-navigation/native";
-import { addName,removeName,editName,fetchNames } from "@/db/functions";
 import React from "react";
 import { Modal, StyleSheet,useColorScheme } from "react-native";
 import { Animated, Easing } from "react-native";
@@ -94,7 +92,7 @@ export default function Index() {
             width: "100%",
           }}>
             {names.map((name) => (
-                <View
+                <ThemedCard
                 style={styles.card}
                 key={name.id}
                 onTouchEnd={() => {
@@ -102,7 +100,7 @@ export default function Index() {
                 }}
                 >
                 <ThemedText fontsize={18}>{name.name}</ThemedText>
-                </View>
+                </ThemedCard>
             ))}
           </View>
         ) : (
@@ -163,20 +161,11 @@ const styles = StyleSheet.create({
     alignItems: "stretch"
   },
   card: {
-    backgroundColor: Colors.light.background,
     borderRadius: 10,
     padding: 20,
     flex:1,
     marginBottom: 15,
     width: 300,
     alignSelf: "center",
-    shadowColor: Colors.light.text,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
   },
 });
