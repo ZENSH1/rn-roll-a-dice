@@ -75,10 +75,11 @@ const diceRollScreen = () => {
           if (!textVisible) {
             rollDice();
           }
-        }} />
+        }}
+        disabled={textVisible} />
         <ThemedButton title="Change Name" onPress={() => {
           router.back()
-        }} />
+        }} disabled={false} />
       </View>
     </View>
   )

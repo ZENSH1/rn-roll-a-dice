@@ -7,10 +7,11 @@ import { useRouter } from "expo-router";
 import { useTheme } from "@react-navigation/native";
 import { addName,removeName,editName,fetchNames } from "@/db/functions";
 import React from "react";
-import { Modal, StyleSheet } from "react-native";
-import { theme } from "@/components/themes";
+import { Modal, StyleSheet,useColorScheme } from "react-native";
 import { Animated, Easing } from "react-native";
 import useNames from "@/hooks/useNames";
+import { Colors } from "@/constants/colors";
+
 
 export default function Index() {
   //UseNames hook to manage namesScreen state and actions
@@ -121,12 +122,12 @@ const styles = StyleSheet.create({
   modalView: {
     marginVertical:250,
     marginHorizontal: 20,
-    backgroundColor: theme.light.colors.background,
+    backgroundColor: Colors.light.background,
     borderRadius: 20,
     padding: 35,
     alignItems: "center",
     alignSelf: "center",
-    shadowColor: theme.light.colors.text,
+    shadowColor: Colors.light.text,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -138,14 +139,14 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center",
-    color: theme.light.colors.text,
+    color: Colors.light.text,
   },
   horizontalView: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     height: 100,
-    color: theme.light.colors.text,
+    color: Colors.light.text,
     marginTop: 20,
     marginHorizontal: 20,
   },
@@ -162,14 +163,14 @@ const styles = StyleSheet.create({
     alignItems: "stretch"
   },
   card: {
-    backgroundColor: theme.light.colors.background,
+    backgroundColor: Colors.light.background,
     borderRadius: 10,
     padding: 20,
     flex:1,
     marginBottom: 15,
     width: 300,
     alignSelf: "center",
-    shadowColor: theme.light.colors.text,
+    shadowColor: Colors.light.text,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -177,6 +178,5 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-
   },
 });

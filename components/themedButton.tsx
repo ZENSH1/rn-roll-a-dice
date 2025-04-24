@@ -1,20 +1,26 @@
 import { useTheme } from '@react-navigation/native';
 import React from 'react';
-import { TouchableOpacity, Text } from 'react-native';
-import { theme } from './themes'; // Adjust the import path as necessary
+import { TouchableOpacity, Text, useColorScheme } from 'react-native';
+import { Colors } from '@/constants/colors';
+
+//here the custom props are defined
+// and the props are passed to the component
 type ThemedButtonProps = {
   onPress: () => void;
   title: string;
+  disabled?: boolean;
 };
 
-export const ThemedButton: React.FC<ThemedButtonProps> = ({ onPress, title }) => {
-  const { colors } = theme.light;
+export const ThemedButton: React.FC<ThemedButtonProps> = ({ onPress, title, disabled }) => {
+  const colorScheme = useColorScheme(); // Get the current color scheme (light or dark)
+  const colors = Colors[colorScheme || 'light']; // Get the colors based on the current color scheme
 
 return (
     <TouchableOpacity
         onPress={onPress}
+        disabled={disabled}
         style={{
-            backgroundColor: colors.primary,
+            backgroundColor: disabled ? "darkgray" : colors.primary,
             paddingVertical: 12,
             paddingHorizontal: 20,
             borderRadius: 25,
