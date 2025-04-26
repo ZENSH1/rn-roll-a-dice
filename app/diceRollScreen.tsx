@@ -1,59 +1,14 @@
 import { StyleSheet, Text, View, Image, Animated } from 'react-native'
-import React, { useState, useEffect,useRef } from 'react'
+import React from 'react'
 import { ThemedButton } from '@/components/ThemedButton'
 import { ThemedText } from '@/components/ThemedText'
-import { diceImages } from '@/constants/images'
-import { addDice } from '@/db/functions'
-//add router
-import { useRouter } from 'expo-router'
+import UseRoll from '@/hooks/useRolls'
+
+
 
 const diceRollScreen = () => {
 
-  const [diceImage, setDiceImage] = useState(diceImages[0])
-  const [textVisible, setTextVisible] = useState(false)
-  const rotateAnim = useRef(new Animated.Value(0)).current;
-  
-
-  const [roll, setRoll] = React.useState(0)
-  const router = useRouter()
-  const rotation = rotateAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'],
-  });
-  const rollDice = () => {
-    // Generate a random number between 0 and 5
-    const randomValue = Math.floor(Math.random() * 6);
-    
-    // Set the new roll value
-    setRoll(randomValue);
-    
-    // Set the corresponding dice image immediately after roll is updated
-   // setDiceImage(diceImages[randomValue]);
-    
-    // Make the text visible
-    setTextVisible(true);
-  
-    // Hide the text after 2 seconds
-    const timer = setTimeout(() => {
-      setTextVisible(false);
-      rotateAnim.setValue(0); // Reset rotation to 0 for the next roll
-    }, 2000);
-
-    setDiceImage(diceImages[randomValue]); // Update the image after the roll
-  
-  
-
-    Animated.timing(rotateAnim, {
-      toValue: 1,
-      duration: 1000,
-      useNativeDriver: true,
-    }).start();
-
-    // Cleanup timeout if the component unmounts or the effect is triggered again
-    return () => clearTimeout(timer);
-  }
-  
-  
+  const { rollDice,roll,popBack,rotation,diceImage,textVisible } = UseRoll()
 
 
   return (
@@ -93,9 +48,7 @@ const diceRollScreen = () => {
           }
         }}
         disabled={textVisible} />
-        <ThemedButton title="Change Name" onPress={() => {
-          router.back()
-        }} disabled={false} />
+        <ThemedButton title="Change Name" onPress={popBack} disabled={false} />
       </View>
     </View>
   )
