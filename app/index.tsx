@@ -1,4 +1,4 @@
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, View, FlatList } from "react-native";
 import { ThemedButton } from "@/components/ThemedButton";
 import { ThemedInput } from "@/components/ThemedInput";
 import { ThemedText } from "@/components/ThemedText";
@@ -9,6 +9,7 @@ import { Modal, StyleSheet,useColorScheme } from "react-native";
 import { Animated, Easing } from "react-native";
 import useNames from "@/hooks/useNames";
 import { Colors } from "@/constants/colors";
+//import { AnimatedWrapper } from 'react-native-micro-interactions';
 
 
 export default function Index() {
@@ -42,12 +43,47 @@ export default function Index() {
       }}
     >
     <View style={styles.horizontalView}>
-    <ThemedButton  onPress={handleAddPress} title="Add Name"/>
-    <ThemedButton  onPress={handleShowNamesPress} title={showNames ? "Hide Names" : "Show Names"}/>
+      <ThemedButton onPress={handleAddPress} title="Add Name" />
+      <ThemedButton
+        onPress={handleShowNamesPress}
+        title={showNames ? "Hide Names" : "Show Names"}
+      />
+
     </View>
 
+      {showNames && (
+        <Animated.View style={{
+          flex: 1,
+          maxHeight: useAutoHeight ? heightAnim : heightAnim, // Use the animated height
+          overflow: 'hidden', // Hide overflow to prevent content from spilling out
+        }}>
+          <ThemedText fontsize={26}>Names:</ThemedText>
+            <FlatList
+            data={names}
+            keyExtractor={(item) => item.id.toString()}
+            style={styles.scrollView}
+            contentContainerStyle={styles.scrollViewContent}
+            showsVerticalScrollIndicator={false}
+            ListEmptyComponent={
+              <ThemedText fontsize={26}>No names available</ThemedText>
+            }
+            renderItem={({ item }) => (
+              <ThemedCard
+              style={styles.card}
+              onTouchEnd={() => {
+                router.push("/diceRollScreen");
+              }}
+              >
+              <ThemedText fontsize={18}>{item.name}</ThemedText>
+              </ThemedCard>
+            )}
+            />
+        </Animated.View>
+    
+      )  }
 
-      <Modal
+
+<Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
@@ -71,45 +107,9 @@ export default function Index() {
             title="Cancel"
           />
             </View>
-          
-          
         </View>
       </Modal>
 
-      {showNames && (
-        <Animated.View style={{
-          flex: 1,
-          maxHeight: useAutoHeight ? null : heightAnim, // Use the animated height
-          overflow: 'hidden', // Hide overflow to prevent content from spilling out
-        }}>
-          <ThemedText fontsize={26}>Names:</ThemedText>
-          <ScrollView
-        style={{ ...styles.scrollView }}
-        contentContainerStyle={styles.scrollViewContent}
-        showsVerticalScrollIndicator={false}>
-        {Array.isArray(names) && names.length > 0 ? (
-          <View style={{
-            width: "100%",
-          }}>
-            {names.map((name) => (
-                <ThemedCard
-                style={styles.card}
-                key={name.id}
-                onTouchEnd={() => {
-                    router.push("/diceRollScreen");
-                }}
-                >
-                <ThemedText fontsize={18}>{name.name}</ThemedText>
-                </ThemedCard>
-            ))}
-          </View>
-        ) : (
-          <ThemedText fontsize={26}>No names available</ThemedText>
-        )}
-          </ScrollView>
-        </Animated.View>
-    
-      )  }
 
 
       </View>

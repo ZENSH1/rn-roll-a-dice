@@ -84,7 +84,21 @@ const useNames = () => {
     };
 
     const handleShowNamesPress = () => {
-        setShowNames(!showNames);
+        if (showNames) {
+            Animated.timing(heightAnim, {
+                toValue: 0,
+                duration: 500, // Animation duration in milliseconds
+                easing: Easing.ease, // Optional easing function
+                useNativeDriver: false, // `false` because height cannot use the native driver
+            }).start((finished) => {
+                if (finished) {
+                    console.log("Animation Completed 0");
+                    setShowNames(false); // Hide names after animation
+                }
+            });
+        } else {
+            setShowNames(!showNames);
+        }
     };
 
     return {
