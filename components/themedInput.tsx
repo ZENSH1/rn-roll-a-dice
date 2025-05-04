@@ -31,7 +31,7 @@ export const ThemedInput: React.FC<ThemedInputProps> = ({ value, onChangeText, l
         backgroundColor: colors.background,
         fontSize: 16,
         height: 40,
-        width: '80%',
+        width: 200,
         alignSelf: 'center',
        }, style] } // Merge with additional styles if provided
     />

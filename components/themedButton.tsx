@@ -25,7 +25,7 @@ return (
             paddingVertical: 12,
             paddingHorizontal: 20,
             borderRadius: 25,
-            margin: 10,
+            marginHorizontal: 10,
             alignItems: 'center',
             justifyContent: 'center',
             width:"auto",
