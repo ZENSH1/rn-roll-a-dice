@@ -1,0 +1,36 @@
+name: Expo Preview APK Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: 'EAS profile to use (e.g., preview, production)'
+        required: true
+        default: 'preview'
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 21
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Install EAS CLI
+        run: npm install -g eas-cli
+
+      - name: Authenticate with Expo
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: eas whoami || eas login --token $EXPO_TOKEN
+
+      - name: Build APK (EAS)
+        run: eas build --platform android --profile ${{ inputs.profile }} --non-interactive
