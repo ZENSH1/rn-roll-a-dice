@@ -4,11 +4,11 @@ import User from "@/db/models/User"; // Adjust the path as needed
 import DiceRoll from "@/db/models/DiceRoll";
 import { diceImages } from '@/constants/images'
 import { addDice } from '@/db/functions'
-//add router
+import { useUser } from "@/context/UserContext";
 import { useRouter } from 'expo-router'
 
 const UseRolls = () => {
-
+  const { currentUser } = useUser();
   const [diceImage, setDiceImage] = useState(diceImages[0])
   const [textVisible, setTextVisible] = useState(false)
   const rotateAnim = useRef(new Animated.Value(0)).current;
@@ -37,10 +37,14 @@ const UseRolls = () => {
     const timer = setTimeout(() => {
       setTextVisible(false);
       rotateAnim.setValue(0); // Reset rotation to 0 for the next roll
-    }, 2000);
+    }, 1000);
 
     setDiceImage(diceImages[randomValue]); // Update the image after the roll
-  
+    console.log('currentUser', currentUser?.id)
+
+    if (currentUser) {
+      addDice(currentUser.id, randomValue);
+    }
   
 
     Animated.timing(rotateAnim, {
@@ -56,9 +60,13 @@ const UseRolls = () => {
   const popBack = () => {
     router.back()
   }
+  const viewHistory = () => {
+    router.push('/historyScreen')
+  }
 
 
   return {
+    viewHistory,
     rollDice,
     roll,
     textVisible,

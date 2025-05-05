@@ -11,16 +11,16 @@ import useNames from "@/hooks/useNames";
 import { Colors } from "@/constants/colors";
 import Spacer from "@/components/Spacer";
 import { AnimatedWrapper } from "react-native-micro-interactions";
-
+import { useUser } from "@/context/UserContext";
 export default function Index() {
   //UseNames hook to manage namesScreen state and actions
+  const { setCurrentUser} = useUser();
   const {
     name,
     names,
     modalVisible,
     selectedName,
     showNames,
-    useAutoHeight,
     heightAnim,
     handleNamePress,
     handleDeletePress,
@@ -53,7 +53,7 @@ export default function Index() {
         <Animated.View
           style={{
             flex: 1,
-            maxHeight: useAutoHeight ? heightAnim : heightAnim, // Use the animated height
+            maxHeight: heightAnim, // Use the animated height
             overflow: "hidden", // Hide overflow to prevent content from spilling out
           }}
         >
@@ -80,7 +80,8 @@ export default function Index() {
 
                     <Spacer size={10} />
 
-                    <Link href={`/diceRollScreen?name=${item.name}`}>
+                    <Link href={`/diceRollScreen?name=${item.name}`}
+                     onPress={()=>setCurrentUser(item)}>
                       <ThemedText fontsize={20}> Name: {item.name}</ThemedText>
                     </Link>
 

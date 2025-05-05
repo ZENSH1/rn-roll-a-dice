@@ -1,14 +1,16 @@
-import { StyleSheet, Text, View, Image, Animated } from 'react-native'
+import { StyleSheet, Text, View, Image, Animated, Pressable } from 'react-native'
 import React from 'react'
 import { ThemedButton } from '@/components/ThemedButton'
 import { ThemedText } from '@/components/ThemedText'
 import UseRoll from '@/hooks/useRolls'
+import { useUser } from '@/context/UserContext';
 
 
 
 const diceRollScreen = () => {
 
-  const { rollDice,roll,popBack,rotation,diceImage,textVisible } = UseRoll()
+  const { currentUser } = useUser();
+  const {viewHistory, rollDice,roll,popBack,rotation,diceImage,textVisible } = UseRoll()
 
 
   return (
@@ -16,7 +18,9 @@ const diceRollScreen = () => {
       
       <ThemedText fontsize={26}>Welcome to the Dice Roll Game!</ThemedText>
       <View style={{ alignItems: 'flex-end', justifyContent: 'flex-end' }}>
-      <ThemedText fontsize={18}>By Zain Sherazi</ThemedText>
+      <Pressable onPress={viewHistory}>
+      <ThemedText fontsize={18}>Hi, {currentUser?.name ?? "Admin"}</ThemedText>
+</Pressable>
       </View>
 
       <View style={{ margin: 20, alignItems: 'center' , justifyContent: 'center' , 
