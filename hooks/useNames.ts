@@ -87,7 +87,7 @@ const useNames = () => {
         if (showNames) {
             Animated.timing(heightAnim, {
                 toValue: 0,
-                duration: 500, // Animation duration in milliseconds
+                duration: 300, // Animation duration in milliseconds
                 easing: Easing.ease, // Optional easing function
                 useNativeDriver: false, // `false` because height cannot use the native driver
             }).start((finished) => {
