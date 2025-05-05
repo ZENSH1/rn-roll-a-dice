@@ -1,0 +1,38 @@
+name: Expo Preview APK Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: 'EAS profile to use (e.g., preview, production)'
+        required: true
+        default: 'preview'
+
+jobs:
+  build-apk:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 21
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Install EAS CLI
+        run: npm install -g eas-cli
+
+      - name: Build APK with EAS
+        id: build_apk
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: |
+          build_output=$(eas build --platform android --profile ${{ inputs.profile }} --non-interactive --json)
+          build_url=$(echo $build_output | jq -r '.artifacts.buildUrl')
+          echo "Build URL: $build_url"
+          echo "APK_URL=$build_url" >> $GITHUB_ENV  # Properly set the environment variable
